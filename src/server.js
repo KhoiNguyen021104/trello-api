@@ -1,28 +1,29 @@
+/* eslint-disable no-console */
 import express from 'express'
-import { mapOrder } from '~/utils/sorts.js'
+import { CLOSED_DB, CONNECT_DB, GET_DB } from './config/mongodb'
+import exitHook from 'async-exit-hook'
+import { env } from './config/environment'
 
-const app = express()
+const START_SERVER = () => {
+  const app = express()
+  app.get('/', async (req, res) => {
+    res.end(`Hello World ${env.AUTHOR}`)
+  })
+  app.listen(env.APP_PORT, env.APP_HOST, () => {
+    console.log(`http://${ env.APP_HOST }:${ env.APP_PORT }/`)
+  })
 
-const hostname = 'localhost'
-const port = 8017
+  exitHook(() => {
+    CLOSED_DB()
+  })
+}
 
-app.get('/', (req, res) => {
-  // Test Absolute import mapOrder
-  console.log(mapOrder(
-    [
-      { id: 'id-1', name: 'One' },
-      { id: 'id-2', name: 'Two' },
-      { id: 'id-3', name: 'Three' },
-      { id: 'id-4', name: 'Four' },
-      { id: 'id-5', name: 'Five' }
-    ],
-    ['id-5', 'id-4', 'id-2', 'id-3', 'id-1'],
-    'id'
-  ))
-  res.end('<h1>Hello World!</h1><hr>')
-})
-
-app.listen(port, hostname, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Hello Word, I am running at http://${ hostname }:${ port }/`)
-})
+(async () => {
+  try {
+    await CONNECT_DB()
+    START_SERVER()
+  } catch (error) {
+    console.error(error)
+    process.exit(0)
+  }
+})()
