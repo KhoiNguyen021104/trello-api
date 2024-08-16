@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import express from 'express'
-import { CLOSED_DB, CONNECT_DB, GET_DB } from './config/mongodb'
+import { CLOSED_DB, CONNECT_DB } from './config/mongodb'
 import exitHook from 'async-exit-hook'
 import { env } from './config/environment'
 import { APIs_V1 } from './routes/v1'
@@ -23,7 +23,6 @@ const START_SERVER = () => {
     CLOSED_DB()
   })
 }
-
 (async () => {
   try {
     await CONNECT_DB()

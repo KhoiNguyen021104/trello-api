@@ -33,9 +33,19 @@ const createNew = async (data) => {
   }
 }
 
-export const findOneById = async (id) => {
+const findOneById = async (id) => {
   try {
     // insert 1 board
+    return await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({
+      _id: new ObjectId(id)
+    })
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+const getDetails = async (id) => {
+  try {
     return await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({
       _id: new ObjectId(id)
     })
@@ -48,5 +58,6 @@ export const boardModel = {
   BOARD_COLLECTION_NAME,
   BOARD_COLLECTION_SCHEMA,
   createNew,
-  findOneById
+  findOneById,
+  getDetails
 }
