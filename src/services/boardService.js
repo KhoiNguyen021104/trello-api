@@ -15,11 +15,11 @@ const createNew = async (reqBody) => {
       slug: slugify(reqBody.title)
     }
     const createdBoard = await boardModel.createNew(newBoard)
-    console.log('createdBoard: ', createdBoard)
+    // console.log('createdBoard: ', createdBoard)
     // createdBoard là obj json chứa insertedId và acknowledge của board
     // dựa vào _id để lấy info của board
     const getNewBoard = await boardModel.findOneById(createdBoard.insertedId)
-    console.log('getNewBoard: ', getNewBoard)
+    // console.log('getNewBoard: ', getNewBoard)
 
     // trả kết quả => bắt buộc
     return getNewBoard

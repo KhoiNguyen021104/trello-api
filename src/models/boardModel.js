@@ -28,7 +28,7 @@ const validateBeforeCreate = async (data) => {
 const createNew = async (data) => {
   try {
     const validateData = await validateBeforeCreate(data)
-    console.log('validateData: ', validateData)
+    // console.log('validateData: ', validateData)
     // trả về data đã đc validate
     // check timestamp => new Date(timestamp)
     return await GET_DB().collection(BOARD_COLLECTION_NAME).insertOne(validateData)
@@ -77,10 +77,34 @@ const getDetails = async (id) => {
     /**
      * aggregate return 1 tập hợp dữ liệu
      * => cần chuyển thành array có 1 ptu => [0]
-     * as => đặt tên cho thuộc tính của object lấy được từ result 
+     * as => đặt tên cho thuộc tính của object lấy được từ result
      */
     console.log('result: ', result)
-    return result[0] || {}
+    return result[0] || null
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+// cập nhật columnOrderIds => push columnId đc tạo vào columnOrderIds
+const pushColumnOrderIds = async (column) => {
+  try {
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
+      {
+        // Điều kiện: tìm board có id = column.boardId
+        _id: new ObjectId(column.boardId)
+      },
+      {
+        // thêm column._id vào columnOrderIds
+        $push: { columnOrderIds: new ObjectId(column._id) }
+      },
+      { returnDocument: 'after' }
+    )
+    console.log(result)
+    /**
+     * 
+     */
+    return result.value
   } catch (error) {
     throw new Error(error)
   }
@@ -91,7 +115,8 @@ export const boardModel = {
   BOARD_COLLECTION_SCHEMA,
   createNew,
   findOneById,
-  getDetails
+  getDetails,
+  pushColumnOrderIds
 }
 
 
