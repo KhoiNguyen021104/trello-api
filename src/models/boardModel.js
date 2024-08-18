@@ -30,7 +30,6 @@ const validateBeforeCreate = async (data) => {
 const createNew = async (data) => {
   try {
     const validateData = await validateBeforeCreate(data)
-    // console.log('validateData: ', validateData)
     // trả về data đã đc validate
     // check timestamp => new Date(timestamp)
     return await GET_DB().collection(BOARD_COLLECTION_NAME).insertOne(validateData)
@@ -81,7 +80,6 @@ const getDetails = async (id) => {
      * => cần chuyển thành array có 1 ptu => [0]
      * as => đặt tên cho thuộc tính của object lấy được từ result
      */
-    // console.log('result: ', result)
     return result[0] || null
   } catch (error) {
     throw new Error(error)
@@ -102,7 +100,6 @@ const pushColumnOrderIds = async (column) => {
       },
       { returnDocument: 'after' }
     )
-    // console.log('pushColumnOrderIds: ', result)
     return result
   } catch (error) {
     throw new Error(error)
@@ -117,6 +114,9 @@ const update = async (boardId, updateData) => {
         delete updateData[key]
       }
     })
+    if (updateData.columnOrderIds) {
+      updateData.columnOrderIds = updateData.columnOrderIds.map(columnId => new ObjectId(columnId))
+    }
     const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
       {
         _id: new ObjectId(boardId)
