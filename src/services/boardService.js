@@ -40,8 +40,21 @@ const getDetails = async (boardId) => {
       )
     })
     delete resBoard.cards
-    console.log('resBoard: ', resBoard)
+    // console.log('resBoard: ', resBoard)
     return resBoard
+  } catch (error) {
+    throw error
+  }
+}
+
+const update = async (boardId, reqBody) => {
+  try {
+    const updateData = {
+      ...reqBody,
+      updatedAt: Date.now()
+    }
+    const updatedBoard = await boardModel.update(boardId, updateData)
+    return updatedBoard
   } catch (error) {
     throw error
   }
@@ -49,5 +62,6 @@ const getDetails = async (boardId) => {
 
 export const boardService = {
   createNew,
-  getDetails
+  getDetails,
+  update
 }
