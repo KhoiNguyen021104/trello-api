@@ -10,7 +10,6 @@ const createNew = async (reqBody) => {
       ...reqBody
     }
     const createdColumn = await columnModel.createNew(newColumn)
-    // console.log('createdColumn: ', createdColumn)
     const getNewColumn = await columnModel.findOneById(createdColumn.insertedId)
     /**
      * VD: result returned
@@ -24,7 +23,6 @@ const createNew = async (reqBody) => {
         _destroy: false
         }
      */
-    // console.log('getNewColumn: ', getNewColumn)
     if (getNewColumn) {
       // thêm array cards vào trong column mới
       getNewColumn.cards = []
@@ -38,7 +36,21 @@ const createNew = async (reqBody) => {
   }
 }
 
+const update = async (columnId, reqBody) => {
+  try {
+    const updateData = {
+      ...reqBody,
+      updatedAt: Date.now()
+    }
+    const updatedColumn = await columnModel.update(columnId, updateData)
+    return updatedColumn
+  } catch (error) {
+    throw error
+  }
+}
+
 
 export const columnService = {
-  createNew
+  createNew,
+  update
 }
