@@ -12,17 +12,13 @@ import { ObjectId } from 'mongodb'
 
 const createNew = async (reqBody) => {
   try {
-    // throw new ApiError(410, 'test error service')
     const newBoard = {
       ...reqBody,
       slug: slugify(reqBody.title)
     }
     const createdBoard = await boardModel.createNew(newBoard)
-    // createdBoard là obj json chứa insertedId và acknowledge của board
-    // dựa vào _id để lấy info của board
     const getNewBoard = await boardModel.findOneById(createdBoard.insertedId)
 
-    // trả kết quả => bắt buộc
     return getNewBoard
   } catch (error) {
     throw error
@@ -37,7 +33,6 @@ const getDetails = async (boardId) => {
     const resBoard = cloneDeep(board)
     resBoard.columns.forEach((column) => {
       column.cards = resBoard.cards.filter(
-        // (card) => card.columnId.toString() === column._id.toString()
         (card) => card.columnId.equals(column._id)
       )
     })
