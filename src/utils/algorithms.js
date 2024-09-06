@@ -22,10 +22,3 @@ export async function comparePassword(password, hashedPassword) {
     console.error(err)
   }
 }
-// Sử dụng hàm
-// const password = 'yourPassword123';
-// const hashedPassword = 'storedHashedPasswordHere'; // Mật khẩu đã mã hóa từ cơ sở dữ liệu
-
-// comparePassword(password, hashedPassword).then(isMatch => {
-//   console.log('Password Match:', isMatch);
-// });

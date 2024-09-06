@@ -7,6 +7,8 @@ import { mailerRoute } from './mailerRoute'
 import { registerRoute } from './registerRoute'
 import { verifyOtpRoute } from './verifyOtpRoute'
 import { finalizeStepRegisterRoute } from './finalizeStepRegisterRoute'
+import { usersRoute } from './usersRoute'
+import { dashboardRoute } from './dashboardRoute'
 
 
 const Router = express.Router()
@@ -22,6 +24,7 @@ Router.use('/sendMail', mailerRoute)
 Router.use('/register', registerRoute)
 Router.use('/verify-otp', verifyOtpRoute)
 Router.use('/finalizeStepRegister', finalizeStepRegisterRoute)
-
+Router.use('/users', usersRoute)
+Router.use('/dashboards', dashboardRoute)
 
 export const APIs_V1 = Router

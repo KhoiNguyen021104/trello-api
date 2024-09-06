@@ -11,7 +11,6 @@ const BOARD_COLLECTION_NAME = 'boards'
 const BOARD_COLLECTION_SCHEMA = Joi.object({
   title: Joi.string().required().min(3).max(50).trim().strict(),
   slug: Joi.string().required().min(3).trim().strict(),
-  description: Joi.string().required().min(3).max(255).trim().strict(),
   type: Joi.string().valid(BOARD_TYPES.PUBLIC, BOARD_TYPES.PRIVATE).required(),
   columnOrderIds: Joi.array().items(
     Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE)
@@ -30,8 +29,6 @@ const validateBeforeCreate = async (data) => {
 const createNew = async (data) => {
   try {
     const validateData = await validateBeforeCreate(data)
-    // trả về data đã đc validate
-    // check timestamp => new Date(timestamp)
     return await GET_DB().collection(BOARD_COLLECTION_NAME).insertOne(validateData)
   } catch (error) {
     throw new Error(error)
